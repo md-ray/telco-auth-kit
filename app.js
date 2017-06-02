@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 // mongodb object and connection
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/tselauthkit');
@@ -9,6 +11,7 @@ var AccessToken = require('./models/access_token.js');
 // Express and Co
 const express = require('express')
 const Util = require('./lib/util.js')
+const messaging = require('./lib/messaging.js')
 const app = express()
 var session = require('express-session');
 
@@ -61,7 +64,14 @@ app.get('/v1/oauth/sms/otp', function(req, res) {
                             if (err) {
                                 res.status(500).send("Internal Error");
                             } else {
-                                res.send("OTP Sent!");        
+                                messaging.sendSms("+62" + Util.formatMsisdn(req.query.msisdn), "Kode untuk masuk aplikasi " + client.name + " adalah " + otpCode, function(err) {
+                                    if (!err) {
+                                        res.send("OTP Sent!");           
+                                    } else {
+                                        res.status(500).send("Internal errow while sending OTP");
+                                    }
+                                });
+                                     
                                 console.log("OTP generated=" + otpCode + ", from msisdn=" + otp.msisdn);
                             }
                         });
@@ -96,7 +106,7 @@ app.get('/v1/oauth/sms/validateOtp', function(req, res) {
                                 res.status(500).send("Internal Error");
                             } else {
                                 if (ret == 0) {
-                                    res.send("OTP not valid. Redirecting back to login back");
+                                    res.send("OTP not valid :(");
                                 } else {
                                     ClientUser.registerUserAndToken(Util.formatMsisdn(req.query.msisdn), req.query.client_id, function(err, generatedToken) {
                                         if (err) {
@@ -128,6 +138,8 @@ app.get('/v1/oauth/sms/validateOtp', function(req, res) {
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')
 })
+
+
 
 /*
 function registerUser(msisdn, client_id, fcallback) {
