@@ -85,11 +85,12 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 <body>
   <div class="login">
 	<h1>Telkomsel Auth Kit</h1>
-    <form method="post">
-    	<input type="text" name="u" placeholder="No Telkomsel" required="required" id="txtMsisdn" />
+    <form method="get" action="/v1/oauth/sms/validateOtp">
+    	<input type="text" placeholder="No Telkomsel" required="required" id="txtMsisdn" name="msisdn" />
 		<button class="btn btn-primary btn-block btn-large" id="btnSendOtp">Kirim Kode OTP</button>
-        <input type="text" name="p" placeholder="Kode OTP" required="required" />
+        <input type="text" placeholder="Kode OTP" required="required"  name="otp" />
         <button type="submit" class="btn btn-primary btn-block btn-large">Login</button>
+		<input type="hidden" required="required"  name="client_id" value="<%=client_id%>" />
     </form>
 </div>
   
@@ -102,8 +103,8 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 		$("#btnSendOtp").prop('disabled', true);
 		$.ajax({
 			method: "GET",
-			url: "/sms/otp",
-			data: {'msisdn' : msisdn, 'appsid' : '<%=appsid %>'}
+			url: "/v1/oauth/sms/otp",
+			data: {'msisdn' : msisdn, 'client_id' : '<%=client_id %>'}
 		}).done(function(res) {
 			alert("hasil=" + res); // the value returned by the server (deal with it)
 		}).fail(function(data, textStatus, xhr) {
