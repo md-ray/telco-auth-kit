@@ -4,7 +4,7 @@ This is a library of authentication using telco capabilities (currently implemen
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes
 
 ### Prerequisites
 
@@ -12,26 +12,27 @@ These instructions will get you a copy of the project up and running on your loc
 - MongoDB as data store
 - Twilio Account for sending SMS (you can use trial version for testing)
 
-
-
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
 
 ```
 git clone https://github.com/saviourcat/telco-auth-kit.git
 npm install
-node apps.js
-
 ```
 
+Create .env file for Twilio configuration. The content will be like
+```
+CLIENT_ID=xxx
+CLIENT_SECRET=xxx
+```
+To run the apps (using the hardcoded port 3000)
+```
+node apps.js
+```
 
 ## Running the tests
 
 N/A
-
 
 ## Deployment
 
@@ -46,16 +47,13 @@ N/A
 
 Contact me
 
-
 ## Authors
 
 * **Muhammad Rayhan** - *Initial work* - [My Github](https://github.com/saviourcat) - [My website](http://mdray.id)
 
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
 
 ## Acknowledgments
 
